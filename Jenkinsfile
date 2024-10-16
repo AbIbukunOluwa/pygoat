@@ -10,6 +10,7 @@ pipeline {
         sh 'sudo apt-get update && sudo apt-get install -y python3 python3-venv'
         sh 'sudo apt-get install -y libpq-dev'
         sh 'sudo apt-get install -y python3-dev python3-setuptools'
+        sh 'sudo apt-get install -y libtiff5-dev libjpeg8-dev libopenjp2-7-dev zlib1g-dev \ libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python3-tk \ libharfbuzz-dev libfribidi-dev libxcb1-dev'
 
         //creating virtual environment
         sh 'python3 -m venv venv'
