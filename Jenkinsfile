@@ -13,7 +13,9 @@ pipeline {
         sh 'python3 -m venv venv'
 
         //From the virtual environment install the dependencies needed for the app
-        sh '. venv/bin/activate && pip install -r requirements.txt'
+        sh '. venv/bin/activate'
+        sh 'python -m pip install -U pip wheel setuptools'
+        sh 'pip install -r requirements.txt'
       }
     }
   }
