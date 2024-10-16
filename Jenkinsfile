@@ -24,8 +24,8 @@ pipeline {
     stage ("Check Information Disclosure") {
       steps{
         // Now I will be performing a scan on secrets exposed by this repo.
-        sh 'trufflesecurity/trufflehog'
-        sh 'trufflehog git https://github.com/AbIbukunOluwa/pygoat.git --json > exposed'
+        sh 'docker run trufflesecurity/trufflehog git https://github.com/AbIbukunOluwa/pygoat.git --json > exposed'
+        //sh 'trufflehog git https://github.com/AbIbukunOluwa/pygoat.git --json > exposed'
       }
     }
   }
