@@ -17,8 +17,15 @@ pipeline {
 
         //From the virtual environment install the dependencies needed for the app
         sh '. venv/bin/activate && python3 -m pip install -U pip wheel setuptools'
-        // sh 'python3 -m pip install -U pip wheel setuptools'
         sh '. venv/bin/activate && pip install -r requirements.txt'
+      }
+    }
+
+    stage ("Check Information Disclosure") {
+      steps{
+        // Now I will be performing a scan on secrets exposed by this repo.
+        sh 'docker run --rm -it -v "$PWD:/pwd" trufflesecurity/trufflehog:latest github --repo https://github.com/trufflesecurity/test_keys'
+        sh 'trufflehog git https://github.com/AbIbukunOluwa/pygoat.git --json > exposed'
       }
     }
   }
