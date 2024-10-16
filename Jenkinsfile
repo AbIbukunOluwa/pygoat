@@ -9,6 +9,7 @@ pipeline {
         // Installing python3 and virtual environment for python3
         sh 'sudo apt-get update && sudo apt-get install -y python3 python3-venv'
         sh 'sudo apt-get install -y libpq-dev'
+        sh 'sudo apt-get install -y python3-dev python3-setuptools'
 
         //creating virtual environment
         sh 'python3 -m venv venv'
