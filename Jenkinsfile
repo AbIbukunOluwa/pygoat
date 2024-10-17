@@ -32,15 +32,15 @@ pipeline {
       }
     }
 
-    stage('Synk') {
+    stage ("Checking code with Synk") {
       steps {
         echo 'Testing for security issues...'
         snykSecurity(
           snykInstallation: 'Snyk',
           snykTokenId: 'snyk_apitoken',
           // place other parameters here
-          failOnIssues: 'true'
-          severity: 'medium'
+          failOnIssues: 'true',
+          severity: 'medium',
         )
       }
     }
