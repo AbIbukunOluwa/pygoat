@@ -35,16 +35,13 @@ pipeline {
     stage ("Checking code with Synk") {
       steps {
         echo 'Testing for security issues...'
-        sh 'ls'
-        sh 'pwd'
-        sh 'snyk test --file=requirements.txt --command=python3'
-        // snykSecurity(
-          // snykInstallation: 'Snyk',
-          // snykTokenId: 'snyk_apitoken',
+        snykSecurity(
+          snykInstallation: 'Snyk',
+          snykTokenId: '338f22c5-f744-4cde-9c23-16ac1c46ac3b',
           // place other parameters here
-          // failOnIssues: 'true',
-          // severity: 'medium'
-        // )
+          failOnIssues: 'true',
+          severity: 'medium'
+        )
       }
     }
   }
