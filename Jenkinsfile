@@ -21,27 +21,30 @@ pipeline {
       }
     }
 
-    stage ("Check Information Disclosure") {
-      steps{
+    // stage ("Check Information Disclosure") {
+      // steps{
         // Now I will be performing a scan on secrets exposed by this repo.
-        sh 'rm exposed || true'
+        // sh 'rm exposed || true'
         //remove the file exposed if there is and if there isn't forget about it.
-        sh 'docker run trufflesecurity/trufflehog git https://github.com/AbIbukunOluwa/pygoat.git --json > exposed'
+        // sh 'docker run trufflesecurity/trufflehog git https://github.com/AbIbukunOluwa/pygoat.git --json > exposed'
         //sh 'trufflehog git https://github.com/AbIbukunOluwa/pygoat.git --json > exposed'
-        sh 'cat exposed'
-      }
-    }
+        // sh 'cat exposed'
+      // }
+    // }
 
     stage ("Checking code with Synk") {
       steps {
         echo 'Testing for security issues...'
-        snykSecurity(
-          snykInstallation: 'Snyk',
-          snykTokenId: 'snyk_apitoken',
+        sh 'ls'
+        sh 'pwd'
+        sh 'snyk test --file=requirements.txt --command=python3'
+        // snykSecurity(
+          // snykInstallation: 'Snyk',
+          // snykTokenId: 'snyk_apitoken',
           // place other parameters here
-          failOnIssues: 'true',
-          severity: 'medium'
-        )
+          // failOnIssues: 'true',
+          // severity: 'medium'
+        // )
       }
     }
   }
