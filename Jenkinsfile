@@ -39,7 +39,7 @@ pipeline {
           snykInstallation: 'Snyk',
           snykTokenId: 'snyk_apitoken',
           // place other parameters here
-          failOnIssues: true
+          failOnIssues: 'true'
           severity: 'medium'
         )
       }
