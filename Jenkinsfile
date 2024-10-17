@@ -35,6 +35,7 @@ pipeline {
     stage ("Checking code with Synk") {
       steps {
         echo 'Testing for security issues...'
+        sh '. venv/bin/activate'
         snykSecurity(
           snykInstallation: 'Snyk',
           snykTokenId: 'snyk_apitoken',
