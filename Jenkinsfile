@@ -40,7 +40,7 @@ pipeline {
           snykTokenId: 'snyk_apitoken',
           // place other parameters here
           failOnIssues: 'true',
-          severity: 'medium',
+          severity: 'medium'
         )
       }
     }
