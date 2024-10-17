@@ -37,7 +37,7 @@ pipeline {
         echo 'Testing for security issues...'
         snykSecurity(
           snykInstallation: 'Snyk',
-          snykTokenId: '338f22c5-f744-4cde-9c23-16ac1c46ac3b',
+          snykTokenId: 'snyk_apitoken',
           // place other parameters here
           failOnIssues: 'true',
           severity: 'medium'
