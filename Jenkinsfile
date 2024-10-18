@@ -22,26 +22,24 @@ pipeline {
     }
 
     // stage ("Check Information Disclosure") {
-      // steps{
-        // Now I will be performing a scan on secrets exposed by this repo.
-        // sh 'rm exposed || true'
-        //remove the file exposed if there is and if there isn't forget about it.
-        // sh 'docker run trufflesecurity/trufflehog git https://github.com/AbIbukunOluwa/pygoat.git --json > exposed'
-        //sh 'trufflehog git https://github.com/AbIbukunOluwa/pygoat.git --json > exposed'
-        // sh 'cat exposed'
-      // }
+    //   steps{
+    //     Now I will be performing a scan on secrets exposed by this repo.
+    //     sh 'rm exposed || true'
+    //     remove the file exposed if there is and if there isn't forget about it.
+    //     sh 'docker run trufflesecurity/trufflehog git https://github.com/AbIbukunOluwa/pygoat.git --json > exposed'
+    //     sh 'trufflehog git https://github.com/AbIbukunOluwa/pygoat.git --json > exposed'
+    //     sh 'cat exposed'
+    //   }
     // }
 
     stage ("Checking code with Synk") {
       steps {
         echo 'Testing for security issues...'
-        sh '. venv/bin/activate'
         snykSecurity(
           snykInstallation: 'Snyk',
           snykTokenId: 'snyk_apitoken',
           // place other parameters here
-          failOnIssues: 'false',
-          failOnError: 'false',
+          failOnIssues: 'true',
           severity: 'medium'
         )
       }
