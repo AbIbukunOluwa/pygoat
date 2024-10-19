@@ -32,17 +32,30 @@ pipeline {
     //   }
     // }
 
-    stage ("Checking code with Synk") {
+    // stage ("Checking code with Synk") {
+    //   steps {
+    //     echo 'Testing for security issues...'
+    //     snykSecurity(
+    //       snykInstallation: 'Snyk',
+    //       snykTokenId: 'snyk_apitoken',
+    //       // place other parameters here
+    //       failOnIssues: 'true',
+    //       severity: 'medium'
+    //     )
+    //   }
+    // }
+
+    stage("Perform SCA with OWASP")
       steps {
-        echo 'Testing for security issues...'
-        snykSecurity(
-          snykInstallation: 'Snyk',
-          snykTokenId: 'snyk_apitoken',
-          // place other parameters here
-          failOnIssues: 'true',
-          severity: 'medium'
-        )
+        dependencyCheck additionalArguments: ''' 
+                    -o "./" 
+                    -s "./"
+                    -f "ALL" 
+                    --prettyPrint''', odcInstallation: 'owasp'
+
+                dependencyCheckPublisher pattern: 'results.xml'
+        
+        sh 'cat results.xml'
       }
-    }
   }
 }
