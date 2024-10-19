@@ -45,7 +45,7 @@ pipeline {
     //   }
     // }
 
-    stage("Perform SCA with OWASP")
+    stage("Perform SCA with OWASP"){
       steps {
         dependencyCheck additionalArguments: ''' 
                     -o "./" 
@@ -57,5 +57,6 @@ pipeline {
         
         sh 'cat results.xml'
       }
+    }
   }
 }
