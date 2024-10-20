@@ -34,7 +34,7 @@ pipeline {
 
     stage ("Checking code with Synk") {
       steps {
-        sh 'sudo apt-get install python3-pip'
+        sh 'sudo apt-get install -y python3-pip'
         echo 'Testing for security issues...'
         snykSecurity(
           snykInstallation: 'Snyk',
