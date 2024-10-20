@@ -21,15 +21,15 @@ pipeline {
       }
     }
 
-    stage ("Check Information Disclosure") {
-      steps{
-        // Now I will be performing a scan on secrets exposed by this repo.
-        sh 'rm exposed || true'
-        // remove the file exposed if there is and if there isn't forget about it.
-        sh 'docker run trufflesecurity/trufflehog git https://github.com/AbIbukunOluwa/pygoat.git --json > exposed'
-        sh 'cat exposed'
-      }
-    }
+    // stage ("Check Information Disclosure") {
+    //   steps{
+    //     // Now I will be performing a scan on secrets exposed by this repo.
+    //     sh 'rm exposed || true'
+    //     // remove the file exposed if there is and if there isn't forget about it.
+    //     sh 'docker run trufflesecurity/trufflehog git https://github.com/AbIbukunOluwa/pygoat.git --json > exposed'
+    //     sh 'cat exposed'
+    //   }
+    // }
 
     // stage ("Checking code with Synk") {
     //   steps {
@@ -44,23 +44,35 @@ pipeline {
     //   }
     // }
 
-    stage ("SAST Analysis with SonarQube") {
-      steps {
-        echo 'Wait... performing SAST analysis'
-
+    stage ("Verify Sonar installation") {
+      steps{
         script{
-          withSonarQubeEnv('SonarQubeScanner') {
-            sh '''
-              sonar-scanner \
-              -Dsonar.projectkey=PyGoat_CI_CD_Pipeline \
-              -Dsonar.sources=. \
-              -Dsonar.host.url=http://localhost:9000 \
-              -Dsonar.login=$sonar_token
-
-            '''
+          withSonarQubeEnv('sonarInst') {
+            sh 'sonar-scanner -v'
           }
         }
       }
+
     }
+
+
+    // stage ("SAST Analysis with SonarQube") {
+    //   steps {
+    //     echo 'Wait... performing SAST analysis'
+
+    //     script{
+    //       withSonarQubeEnv('sonarInst') {
+    //         sh '''
+    //           sonar-scanner \
+    //           -Dsonar.projectkey=PyGoat_CI_CD_Pipeline \
+    //           -Dsonar.sources=. \
+    //           -Dsonar.host.url=http://localhost:9000 \
+    //           -Dsonar.login=$sonar_token
+
+    //         '''
+    //       }
+    //     }
+    //   }
+    // }
   }
 }
