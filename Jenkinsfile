@@ -51,7 +51,7 @@ pipeline {
         script{
           withSonarQubeEnv('sonarInst') {
             sh '''
-              sonar-scanner \
+              SonarQubeScanner \
               -DSonar.projectkey=PyGoat_CI_CD_Pipeline \
               -DSonar.sources=. \
               -DSonar.host.url=http://localhost:9000 \
