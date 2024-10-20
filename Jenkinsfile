@@ -32,31 +32,33 @@ pipeline {
     //   }
     // }
 
-    // stage ("Checking code with Synk") {
-    //   steps {
-    //     echo 'Testing for security issues...'
-    //     snykSecurity(
-    //       snykInstallation: 'Snyk',
-    //       snykTokenId: 'snyk_apitoken',
-    //       // place other parameters here
-    //       failOnIssues: 'true',
-    //       severity: 'medium'
-    //     )
-    //   }
-    // }
-
-    stage("Perform SCA with OWASP"){
+    stage ("Checking code with Synk") {
       steps {
-        dependencyCheck additionalArguments: ''' 
-                    -o "./" 
-                    -s "./"
-                    -f "ALL" 
-                    --prettyPrint''', odcInstallation: 'owasp'
-
-                dependencyCheckPublisher pattern: 'results.xml'
-        
-        sh 'cat results.xml'
+        sh 'sudo apt-get install python3-pip'
+        echo 'Testing for security issues...'
+        snykSecurity(
+          snykInstallation: 'Snyk',
+          snykTokenId: 'snyk_apitoken',
+          // place other parameters here
+          failOnIssues: 'true',
+          severity: 'medium'
+        )
       }
     }
+
+    // stage("Perform SCA with OWASP") {
+    //   steps {
+    //     dependencyCheck additionalArguments: ''' 
+    //                 -o "./" 
+    //                 -s "./"
+    //                 -f "ALL" 
+    //                 --prettyPrint''', odcInstallation: 'owasp'
+
+    //             dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+        
+    //     sh 'cat dependency-check-report.xml'
+    //     // Ran this before and I don't think it flagged anything.
+    //   }
+    // }
   }
 }
