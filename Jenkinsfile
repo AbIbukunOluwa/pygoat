@@ -1,6 +1,10 @@
 pipeline {
   
   agent any
+
+  tools{
+    sonarScanner 'SonarQubeScanner'
+  }
   
   stages{
     stage("Preparation") {
@@ -51,11 +55,11 @@ pipeline {
         script{
           withSonarQubeEnv('sonarInst') {
             sh '''
-              SonarQubeScanner/bin/sonar-scanner \
-              -DSonar.projectkey=PyGoat_CI_CD_Pipeline \
-              -DSonar.sources=. \
-              -DSonar.host.url=http://localhost:9000 \
-              -DSonar.login=$sonar_token
+              sonar-scanner \
+              -Dsonar.projectkey=PyGoat_CI_CD_Pipeline \
+              -Dsonar.sources=. \
+              -Dsonar.host.url=http://localhost:9000 \
+              -Dsonar.login=$sonar_token
 
             '''
           }
