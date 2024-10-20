@@ -35,6 +35,9 @@ pipeline {
     stage ("Checking code with Synk") {
       steps {
         sh 'sudo apt-get install -y python3-pip'
+        sh 'python3 -m venv venv_snyk'
+        // craete another virtual environment to run snyk. This should prevent pip issues
+        sh 'source venv_snyk/bin/activate'
         sh 'pip install -r requirements.txt'
 
         echo 'Testing for security issues...'
