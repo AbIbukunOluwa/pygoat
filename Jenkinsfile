@@ -21,69 +21,47 @@ pipeline {
       }
     }
 
-    // stage ("Check Information Disclosure") {
-    //   steps{
-    //     Now I will be performing a scan on secrets exposed by this repo.
-    //     sh 'rm exposed || true'
-    //     remove the file exposed if there is and if there isn't forget about it.
-    //     sh 'docker run trufflesecurity/trufflehog git https://github.com/AbIbukunOluwa/pygoat.git --json > exposed'
-    //     sh 'trufflehog git https://github.com/AbIbukunOluwa/pygoat.git --json > exposed'
-    //     sh 'cat exposed'
-    //   }
-    // }
-
-    // stage ("Checking code with Synk") {
-    //   steps {
-    //     sh 'sudo apt-get install -y python3-pip'
-    //     sh 'python3 -m venv venv_snyk'
-    //     // craete another virtual environment to run snyk. This should prevent pip issues
-    //     sh 'source venv_snyk/bin/activate'
-    //     sh 'pip install -r requirements.txt'
-
-        // echo 'Testing for security issues...'
-        // snykSecurity(
-        //   snykInstallation: 'Snyk',
-        //   snykTokenId: 'snyk_apitoken',
-        //   // place other parameters here
-        //   failOnIssues: 'true',
-        //   severity: 'medium'
-        // )
-    //   }
-    // }
-
-    stage ("Usign Snyk-CLI") {
-      steps {
-        // sh 'wget https://github.com/snyk/cli/releases/download/v1.1293.1/snyk-linux'
-        // sh 'chmod +x snyk-linux'
-        sh 'python3 -m venv snyk_venv'
-        sh '. snyk_venv/bin/activate && pip install -r requirements.txt'
-        // sh './snyk-linux auth=snyk_apitoken'
-        // sh './snyk-linux test --file=requirements.txt'
-
-        echo 'Testing for security issues...'
-        snykSecurity(
-          snykInstallation: 'Snyk',
-          snykTokenId: 'snyk_apitoken',
-          // place other parameters here
-          failOnIssues: 'true',
-          severity: 'medium'
-        )
+    stage ("Check Information Disclosure") {
+      steps{
+        Now I will be performing a scan on secrets exposed by this repo.
+        sh 'rm exposed || true'
+        remove the file exposed if there is and if there isn't forget about it.
+        sh 'docker run trufflesecurity/trufflehog git https://github.com/AbIbukunOluwa/pygoat.git --json > exposed'
+        sh 'trufflehog git https://github.com/AbIbukunOluwa/pygoat.git --json > exposed'
+        sh 'cat exposed'
       }
     }
 
-    // stage("Perform SCA with OWASP") {
+    // stage ("Checking code with Synk") {
     //   steps {
-    //     dependencyCheck additionalArguments: ''' 
-    //                 -o "./" 
-    //                 -s "./"
-    //                 -f "ALL" 
-    //                 --prettyPrint''', odcInstallation: 'owasp'
-
-    //             dependencyCheckPublisher pattern: 'dependency-check-report.xml'
-        
-    //     sh 'cat dependency-check-report.xml'
-    //     // Ran this before and I don't think it flagged anything.
+    //     echo 'Testing for security issues...'
+    //     snykSecurity(
+    //       snykInstallation: 'Snyk',
+    //       snykTokenId: 'snyk_apitoken',
+    //       // place other parameters here
+    //       failOnIssues: 'true',
+    //       severity: 'medium'
+    //     )
     //   }
     // }
+
+    stage ("SAST Analysis with SonarQube") {
+      steps {
+        echo 'Wait... performing SAST analysis'
+
+        script{
+          withSonarQubeEnv('sonar') {
+            sh '''
+              sonar-scanner \
+              -DSonar.projectkey=PyGoat_CI_CD_Pipeline \
+              -DSonar.sources=. \
+              -DSonar.host.url=http://localhost:9000 \
+              -DSonar.login=$sonar_token
+
+            '''
+          }
+        }
+      }
+    }
   }
 }
