@@ -2,6 +2,10 @@ pipeline {
   
   agent any
 
+  tools{
+    sonarScanner 'SonarQubeScanner'
+  }
+  
   stages{
     stage("Preparation") {
       steps{
@@ -49,8 +53,9 @@ pipeline {
         echo 'Wait... performing SAST analysis'
 
         script{
-          withSonarQubeEnv('sonarInst') {
+          withSonarQubeEnv('SonarQubeScanner') {
             sh '''
+              sonar-scanner \
               -Dsonar.projectkey=PyGoat_CI_CD_Pipeline \
               -Dsonar.sources=. \
               -Dsonar.host.url=http://localhost:9000 \
