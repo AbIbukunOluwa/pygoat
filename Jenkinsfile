@@ -32,30 +32,31 @@ pipeline {
     //   }
     // }
 
-    stage ("Checking code with Synk") {
-      steps {
-        sh 'sudo apt-get install -y python3-pip'
-        sh 'python3 -m venv venv_snyk'
-        // craete another virtual environment to run snyk. This should prevent pip issues
-        sh 'source venv_snyk/bin/activate'
-        sh 'pip install -r requirements.txt'
+    // stage ("Checking code with Synk") {
+    //   steps {
+    //     sh 'sudo apt-get install -y python3-pip'
+    //     sh 'python3 -m venv venv_snyk'
+    //     // craete another virtual environment to run snyk. This should prevent pip issues
+    //     sh 'source venv_snyk/bin/activate'
+    //     sh 'pip install -r requirements.txt'
 
-        echo 'Testing for security issues...'
-        snykSecurity(
-          snykInstallation: 'Snyk',
-          snykTokenId: 'snyk_apitoken',
-          // place other parameters here
-          failOnIssues: 'true',
-          severity: 'medium'
-        )
-      }
-    }
+    //     echo 'Testing for security issues...'
+    //     snykSecurity(
+    //       snykInstallation: 'Snyk',
+    //       snykTokenId: 'snyk_apitoken',
+    //       // place other parameters here
+    //       failOnIssues: 'true',
+    //       severity: 'medium'
+    //     )
+    //   }
+    // }
 
     stage ("Usign Snyk-CLI") {
       steps {
         sh 'https://github.com/snyk/cli/releases/download/v1.1293.1/snyk-linux'
         sh 'chmod +x snyk-linux'
         sh 'python -m venv snyk_venv'
+        sh '. snyk_venv/bin/activate'
         sh 'pip install -r requirements.txt'
         sh './snyk-linux test --file=requirements.txt'
       }
