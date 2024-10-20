@@ -56,8 +56,7 @@ pipeline {
         // sh 'wget https://github.com/snyk/cli/releases/download/v1.1293.1/snyk-linux'
         // sh 'chmod +x snyk-linux'
         sh 'python3 -m venv snyk_venv'
-        sh '. snyk_venv/bin/activate'
-        sh 'pip install -r requirements.txt'
+        sh '. snyk_venv/bin/activate && pip install -r requirements.txt'
         // sh './snyk-linux auth=snyk_apitoken'
         // sh './snyk-linux test --file=requirements.txt'
 
