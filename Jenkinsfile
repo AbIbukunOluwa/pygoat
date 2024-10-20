@@ -49,7 +49,7 @@ pipeline {
         echo 'Wait... performing SAST analysis'
 
         script{
-          withSonarQubeEnv('sonar') {
+          withSonarQubeEnv('sonarInst') {
             sh '''
               sonar-scanner \
               -DSonar.projectkey=PyGoat_CI_CD_Pipeline \
